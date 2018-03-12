@@ -36,6 +36,10 @@ Search-video是基于原生`<video>`的封装，视频由百度转存，去掉�
 </video>
 ```
 
+## MIP版本
+
+待发布
+
 ## 相关文档
 
 [API文档](docs/api.md)
