@@ -17,35 +17,41 @@ export class searchVideo {
         }
         this.initDom(this._config);
     }
+
     /**
      * Set config to Dom
+     *
      * @param {Object} config set config to dom
      */
     initDom(config) {
         if (typeof config.id === 'string') {
             let container = document.querySelector('#' + config.id);
-            let videoDom = document.createElement('video');
-            for (let k in config) {
-                if (config.hasOwnProperty(k)) {
-                    if (typeof config[k] === 'boolean') {
-                        if (k === 'playsinline' && config[k] === true) {
-                            videoDom.setAttribute('playsinline', 'playsinline');
-                            videoDom.setAttribute('webkit-playsinline', 'webkit-playsinline');
+            // If <video> can use
+            if (!!(document.createElement('video').canPlayType)) {
+                container.innerHTML = '';
+                let videoDom = document.createElement('video');
+                for (let k in config) {
+                    if (config.hasOwnProperty(k)) {
+                        if (typeof config[k] === 'boolean') {
+                            if (k === 'playsinline' && config[k] === true) {
+                                videoDom.setAttribute('playsinline', 'playsinline');
+                                videoDom.setAttribute('webkit-playsinline', 'webkit-playsinline');
+                            }
+                            else {
+                                videoDom[k] = config[k];
+                            }
+                        }
+                        else if (k === 'src') {
+                            videoDom.setAttribute(k, config[k][0]);
                         }
                         else {
-                            videoDom[k] = config[k];
+                            videoDom.setAttribute(k, config[k]);
                         }
                     }
-                    else if (k === 'src') {
-                        videoDom.setAttribute(k, config[k][0]);
-                    }
-                    else {
-                        videoDom.setAttribute(k, config[k]);
-                    }
                 }
+                log.bind(videoDom);
+                container.appendChild(videoDom);
             }
-            log.bind(videoDom);
-            container.appendChild(videoDom);
         }
         else {
             alert('DOM id is wrong');

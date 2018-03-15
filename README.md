@@ -31,9 +31,9 @@ Search-video是基于原生`<video>`的封装，视频由百度转存，去掉�
 ## 失效提示
 对于不支持HTML5 video的环境，可以显示提示信息。
 ```html
-<video id="searchVideo">
+<div id="searchVideo">
     您的浏览器不支持视频播放，可以从<a href="http://www.baidu.com" target="_blank">这里</a> 下载该视频。
-</video>
+</div>
 ```
 
 ## MIP版本
