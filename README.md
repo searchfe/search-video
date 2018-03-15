@@ -14,7 +14,7 @@ Search-video是基于原生`<video>`的封装，视频由百度转存，去掉�
         <script src="此处为searchVideo地址"></script>
     </head>
     <body>
-        <video id="searchVideo"></video>
+        <div id="searchVideo"></div>
         <script>
             var player = new searchVideo({
                 id: 'searchVideo'
