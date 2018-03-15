@@ -1,0 +1,27 @@
+{
+  "name": "search-video",
+  "version": "1.0.0",
+  "description": "HTML5 video player for mobile",
+  "contributors": [
+    {
+      "name": "邹红全",
+      "email": "icanghai@foxmail.com"
+    }
+  ],
+  "scripts": {
+    "build": "npx webpack --config webpack.config.js --watch",
+    "commit": "git-cz"
+  },
+  "config": {
+    "commitizen":{"path":"node_modules/cz-conventional-changelog"}
+  },
+  "dependencies": {
+    "lodash": "^4.17.5"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.1.3",
+    "babel-preset-es2015": "^6.24.1",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.1.0"
+  }
+}
