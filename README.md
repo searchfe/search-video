@@ -8,10 +8,11 @@ Search-video是基于原生`<video>`的封装，视频由百度转存，去掉�
 相比MIP版本，直接使用原生的video标签，在原生标签上进行改造升级。
 
 ## 使用示例
+CDN：https://vdse.bdstatic.com//search-video.v1.min.js
 ```html
 <html>
     <head>
-        <script src="此处为searchVideo地址"></script>
+        <script src="https://vdse.bdstatic.com//search-video.v1.min.js"></script>
     </head>
     <body>
         <div id="searchVideo"></div>
