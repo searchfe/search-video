@@ -5,7 +5,7 @@ Search-video是基于原生`<video>`的封装，视频由百度转存，去掉�
 分别提供MIP版代码和普通版代码，分别用于MIP页和非MIP页。 
 
 ## 非MIP版
-相比MIP版本，直接使用原生的video标签，在原生标签上进行改造升级。
+相比MIP版本，组件内部使用video，进行封装改造，有JS对象可以操作`<video>`。
 
 ## 使用示例
 CDN：https://vdse.bdstatic.com//search-video.v1.min.js
@@ -19,10 +19,12 @@ CDN：https://vdse.bdstatic.com//search-video.v1.min.js
         <script>
             var player = new searchVideo({
                 id: 'searchVideo'
-                src: 'xxx.mp4',
+                src: ['xxx.mp4'],
                 controls: true,
                 poster: 'xxx.jpg',
-                autoplay: true
+                autoplay: true,
+                width: 800,
+                height: 600
             });
         </script>
     </body>
