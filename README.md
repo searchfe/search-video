@@ -41,7 +41,7 @@ CDN：https://vdse.bdstatic.com//search-video.v1.min.js
 
 ## MIP版本
 
-待发布
+[mip-search-video](https://github.com/mipengine/mip-extensions-platform/tree/master/mip-search-video)
 
 ## 相关文档
 
