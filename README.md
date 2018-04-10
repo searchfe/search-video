@@ -18,7 +18,7 @@ CDN：https://vdse.bdstatic.com//search-video.v1.min.js
         <div id="searchVideo"></div>
         <script>
             var player = new searchVideo({
-                id: 'searchVideo'
+                id: 'searchVideo',
                 src: ['xxx.mp4'],
                 controls: true,
                 poster: 'xxx.jpg',
