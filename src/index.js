@@ -21,15 +21,16 @@ export class searchVideo {
     /**
      * Set config to Dom
      *
-     * @param {Object} config set config to dom
+     * @param {Object} config Set config to dom
      */
     initDom(config) {
-        if (typeof config.id === 'string') {
+        if (typeof config.id === 'string') {S
             let container = document.querySelector('#' + config.id);
             // If <video> can use
             if (!!(document.createElement('video').canPlayType)) {
                 container.innerHTML = '';
                 let videoDom = document.createElement('video');
+                let srcList = [];
                 for (let k in config) {
                     if (config.hasOwnProperty(k)) {
                         if (typeof config[k] === 'boolean') {
@@ -42,7 +43,12 @@ export class searchVideo {
                             }
                         }
                         else if (k === 'src') {
+                            srcList = config[k];
                             videoDom.setAttribute(k, config[k][0]);
+                            // If src is a list, play list
+                            if (srcList.length > 1) {
+                                this.playList(videoDom, srcList);
+                            }
                         }
                         else {
                             videoDom.setAttribute(k, config[k]);
@@ -56,6 +62,31 @@ export class searchVideo {
         else {
             alert('DOM id is wrong');
         }
+    }
+    /**
+     * 
+     * @param {HTMLElement} videoDom Video DOM
+     * @param {Array} srcList Video src list
+     */
+    playList(videoDom, srcList) {
+        let index = 0;
+        let flag = false;
+        videoDom.addEventListener('ended', function() {
+            index++;
+            // When play list end set index = 0, to the first src url
+            if (index === srcList.length){
+                index = 0;    
+            }
+            videoDom.setAttribute('src',srcList[index]);
+            if (!flag) {
+                videoDom.addEventListener('loadeddata', function() {
+                    if (index !== 0) {
+                        videoDom.play();
+                    }
+                });
+                flag = true;
+            }
+        });
     }
 }
 
