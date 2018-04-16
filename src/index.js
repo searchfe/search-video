@@ -30,6 +30,7 @@ export class searchVideo {
             if (!!(document.createElement('video').canPlayType)) {
                 container.innerHTML = '';
                 let videoDom = document.createElement('video');
+                let srcList = [];
                 for (let k in config) {
                     if (config.hasOwnProperty(k)) {
                         if (typeof config[k] === 'boolean') {
@@ -42,7 +43,11 @@ export class searchVideo {
                             }
                         }
                         else if (k === 'src') {
+                            srcList = config[k];
                             videoDom.setAttribute(k, config[k][0]);
+                            if (srcList.length > 1) {
+                                this.playList(videoDom, srcList);
+                            }
                         }
                         else {
                             videoDom.setAttribute(k, config[k]);
@@ -56,6 +61,25 @@ export class searchVideo {
         else {
             alert('DOM id is wrong');
         }
+    }
+    playList(videoDom, srcList) {
+        let index = 0;
+        let flag = false;
+        videoDom.addEventListener('ended', function() {
+            index++;
+            if (index === srcList.length){
+                index = 0;    
+            }
+            videoDom.setAttribute('src',srcList[index]);
+            if (!flag) {
+                videoDom.addEventListener('loadeddata', function() {
+                    if (index !== 0) {
+                        videoDom.play();
+                    }
+                });
+                flag = true;
+            }
+        });
     }
 }
 

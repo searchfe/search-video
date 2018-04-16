@@ -50,16 +50,21 @@ export let log = {
             url: location.href,
             videoSrc: videoEl.src
         };
+        videoLog.duration = videoEl.duration;
         // Play times & Start time
         videoEl.addEventListener('play', function () {
-            if (!videoLog.status.init) {
+            urlData.videoSrc = videoEl.src;
+            if (!videoLog.status.init && videoLog.time.play === 0) {
                 videoLog.time.play = +new Date();
             }
         });
         videoEl.addEventListener('playing', function () {
+            if (isNaN(videoLog.duration)) {
+                videoLog.duration = videoEl.duration
+            }
             let playingTime = +new Date();
             // iOS playing event is true playing
-            if (!videoLog.status.init && os.isIos()) {
+            if (!videoLog.status.init && !os.isAndroid()) {
                 videoLog.status.init = true;
                 let playTime = playingTime - videoLog.time.play;
                 let data = {
@@ -73,7 +78,7 @@ export let log = {
                 let time = playingTime - videoLog.time.waiting;
                 let data = {
                     time: time,
-                    duration: videoEl.duration
+                    duration: videoLog.duration
                 };
                 Object.assign(data, urlData);
                 self.sendLog('waiting', data);
@@ -84,8 +89,11 @@ export let log = {
             videoLog.status.waiting = true;
         });
         // Played time & Play completion ratio
-        let sectionArr = new Array(videoLog.sectionNum);
+        let sectionArr = new Array(videoLog.sectionNum).fill(0);
         videoEl.addEventListener('timeupdate', function () {
+            if (isNaN(videoLog.duration)) {
+                videoLog.duration = videoEl.duration;
+            }
             // Hack Android playing event
             if (!videoLog.status.init && os.isAndroid() && videoEl.currentTime !== 0) {
                 videoLog.status.init = true;
@@ -98,10 +106,11 @@ export let log = {
                 self.sendLog('play', data);
             }
             // If duration > 10s send Played time & Play completion ratio log
-            if (videoEl.duration > 10) {
+            if (videoLog.duration > 10) {
                 for (let i = 0; i < sectionArr.length; i++) {
-                    if (typeof sectionArr[i] === 'undefined'
-                    && ((videoEl.currentTime / videoEl.duration) >= (i / sectionArr.length))) {
+                    if (sectionArr[i] === 0
+                    && ((videoEl.currentTime / videoLog.duration) >= (i / sectionArr.length))
+                    && ((videoEl.currentTime / videoLog.duration) < ((i + 1) / sectionArr.length))) {
                         sectionArr[i] = 1;
                         // Data of 0% is replace by play times
                         if (i !== 0) {
@@ -118,11 +127,28 @@ export let log = {
         });
         // Play end statistics separately
         videoEl.addEventListener('ended', function () {
+            if (isNaN(videoLog.duration)) {
+                videoLog.duration = videoEl.duration;
+            }
             let data = {
-                currentTime: videoEl.currentTime,
+                currentTime: videoLog.duration,
                 cent: '100%'
             };
+            Object.assign(data, urlData);
             self.sendLog('section', data);
+            let tempTime = +new Date();
+            videoLog = {
+                status: {
+                    init: false,
+                    waiting: false
+                },
+                time: {
+                    play: tempTime,
+                    currentTime: 0
+                },
+                sectionNum: 10
+            };
+            sectionArr.fill(0);
         });
     },
     /**
