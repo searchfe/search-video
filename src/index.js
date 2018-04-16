@@ -21,10 +21,10 @@ export class searchVideo {
     /**
      * Set config to Dom
      *
-     * @param {Object} config set config to dom
+     * @param {Object} config Set config to dom
      */
     initDom(config) {
-        if (typeof config.id === 'string') {
+        if (typeof config.id === 'string') {S
             let container = document.querySelector('#' + config.id);
             // If <video> can use
             if (!!(document.createElement('video').canPlayType)) {
@@ -45,6 +45,7 @@ export class searchVideo {
                         else if (k === 'src') {
                             srcList = config[k];
                             videoDom.setAttribute(k, config[k][0]);
+                            // If src is a list, play list
                             if (srcList.length > 1) {
                                 this.playList(videoDom, srcList);
                             }
@@ -62,11 +63,17 @@ export class searchVideo {
             alert('DOM id is wrong');
         }
     }
+    /**
+     * 
+     * @param {HTMLElement} videoDom Video DOM
+     * @param {Array} srcList Video src list
+     */
     playList(videoDom, srcList) {
         let index = 0;
         let flag = false;
         videoDom.addEventListener('ended', function() {
             index++;
+            // When play list end set index = 0, to the first src url
             if (index === srcList.length){
                 index = 0;    
             }
