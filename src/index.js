@@ -9,7 +9,7 @@ import {log} from './log.js';
 
 export class searchVideo {
     constructor(config) {
-        this.version = '1.0.0';
+        this.version = '1.1.1';
         this._config = createDefaultConfig();
         Object.assign(this._config, config);
         if (this._config.autoplay === false) {
@@ -24,7 +24,7 @@ export class searchVideo {
      * @param {Object} config Set config to dom
      */
     initDom(config) {
-        if (typeof config.id === 'string') {S
+        if (typeof config.id === 'string') {
             let container = document.querySelector('#' + config.id);
             // If <video> can use
             if (!!(document.createElement('video').canPlayType)) {
@@ -32,7 +32,7 @@ export class searchVideo {
                 let videoDom = document.createElement('video');
                 let srcList = [];
                 for (let k in config) {
-                    if (config.hasOwnProperty(k)) {
+                    if (config.hasOwnProperty(k) && k !== 'extra') {
                         if (typeof config[k] === 'boolean') {
                             if (k === 'playsinline' && config[k] === true) {
                                 videoDom.setAttribute('playsinline', 'playsinline');
@@ -55,7 +55,7 @@ export class searchVideo {
                         }
                     }
                 }
-                log.bind(videoDom);
+                log.bind(videoDom, config.extra.refer);
                 container.appendChild(videoDom);
             }
         }
