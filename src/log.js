@@ -27,7 +27,7 @@ export let log = {
      * Bind log event
      * @param {Element} videoEl <video> element
      */
-    bind(videoEl) {
+    bind(videoEl, refer = '') {
         let self = this;
         let os = new platform();
         self.init();
@@ -68,7 +68,8 @@ export let log = {
                 videoLog.status.init = true;
                 let playTime = playingTime - videoLog.time.play;
                 let data = {
-                    time: playTime
+                    time: playTime,
+                    refer: refer
                 };
                 Object.assign(data, urlData);
                 self.sendLog('play', data);
@@ -166,7 +167,8 @@ export let log = {
                 self.webb2.send('pf_comm', {
                     expend: time,
                     url: data.url,
-                    videoSrc: data.videoSrc
+                    videoSrc: data.videoSrc,
+                    refer: refer
                 }, function () {}, {
                     group: 'searchVideo'
                 });
