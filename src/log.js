@@ -101,7 +101,8 @@ export let log = {
                 let playingTime = +new Date();
                 let playTime = playingTime - videoLog.time.play;
                 let data = {
-                    time: playTime
+                    time: playTime,
+                    refer: refer
                 };
                 Object.assign(data, urlData);
                 self.sendLog('play', data);
@@ -168,7 +169,7 @@ export let log = {
                     expend: time,
                     url: data.url,
                     videoSrc: data.videoSrc,
-                    refer: refer
+                    refer: data.refer
                 }, function () {}, {
                     group: 'searchVideo'
                 });

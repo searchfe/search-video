@@ -5,12 +5,13 @@
  */
 
 export const defaultConfig = {
-    autoplay: false,
-    controls: true,
-    loop: false,
-    preload: 'metadata',
-    playsinline: true,
-    muted: false
+    'autoplay': false,
+    'controls': true,
+    'loop': false,
+    'preload': 'metadata',
+    'playsinline': true,
+    'muted': false,
+    'webkit-playsinline': true
 };
 
 export function createDefaultConfig() {
