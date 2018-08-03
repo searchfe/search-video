@@ -3,7 +3,6 @@
  * @author IShinji<icanghai@foxmail.com>
  * @copyright 2018 Baidu.com, Inc. All Rights Reserved
  */
-
 export const defaultConfig = {
     'autoplay': false,
     'controls': true,
@@ -11,7 +10,8 @@ export const defaultConfig = {
     'preload': 'metadata',
     'playsinline': true,
     'muted': false,
-    'webkit-playsinline': true
+    'webkit-playsinline': true,
+    'https': true
 };
 
 export function createDefaultConfig() {
