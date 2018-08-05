@@ -3,14 +3,15 @@
  * @author IShinji<icanghai@foxmail.com>
  * @copyright 2018 Baidu.com, Inc. All Rights Reserved
  */
-
 export const defaultConfig = {
-    autoplay: false,
-    controls: true,
-    loop: false,
-    preload: 'metadata',
-    playsinline: true,
-    muted: false
+    'autoplay': false,
+    'controls': true,
+    'loop': false,
+    'preload': 'metadata',
+    'playsinline': true,
+    'muted': false,
+    'webkit-playsinline': true,
+    'https': true
 };
 
 export function createDefaultConfig() {
