@@ -39,6 +39,16 @@ CDN：https://vdse.bdstatic.com//search-video.v1.min.js
 </div>
 ```
 
+## 开发相关
+```shell
+yarn install #安装需要的依赖包
+yarn commit #代替git commit
+yarn build #编译代码
+yarn watch #实时编译代码
+```
+master分支只接受develop的merge。
+pr请发到develop上。
+
 ## MIP版本
 
 [mip-search-video](https://github.com/mipengine/mip-extensions-platform/tree/master/mip-search-video)
