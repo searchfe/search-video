@@ -9,7 +9,8 @@
     }
   ],
   "scripts": {
-    "build": "npx webpack --config webpack.config.js --watch",
+    "build": "npx webpack --config webpack.config.js",
+    "watch": "npx webpack --config webpack.config.js --watch",
     "commit": "git-cz"
   },
   "config": {
