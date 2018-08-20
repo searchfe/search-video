@@ -19,7 +19,6 @@ export class platform {
         this.isSafari = false;
         this.isChrome = false;
         this.isFireFox = false;
-	this.isSearchCraft = false;
         // engine
         this.isTrident = false;
         this.isGecko = false;
@@ -70,9 +69,7 @@ export class platform {
         } else if (/android/i.test(this.ua())
             && /Android[\s\_\-\/i686]?[\s\_\-\/](\d+[\.\-\_]\d+[\.\-\_]?\d*)/i.test(this.ua())) {
             this.isAdr = true;
-        } else if (/SearchCraft/i.test(this.ua())) {
-	    this.isSearchCraft = true;
-	}
+        }
     }
     /**
      * Judge browser engine type
@@ -139,11 +136,6 @@ export class platform {
      */
     appVersion() {
         return navigator.appVersion;
-    }
-    secrVersion() {
-	var match = this.ua().match(/ SearchCraft\/([0-9]+_)?([0-9.]+)/i);
-	var version = /(iPhone|iPod|iPad)/.test(this.ua()) ? match[2].split('.') : match[2].split('.');
-	return version ? version.map(parseFloat) : [];
     }
     /**
      * Init match user agent
