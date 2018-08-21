@@ -112,6 +112,7 @@ export var log = {
 		var data = {
                     refer: refer
                 };
+		Object.assign(data, urlData);
 		self.getPlayTime(data);
             }
             else if (videoLog.status.waiting) {
@@ -141,6 +142,7 @@ export var log = {
 		var data = {
                     refer: refer
                 };
+		Object.assign(data, urlData);
 		self.getPlayTime(data);
             }
             // If duration > 10s send Played time & Play completion ratio log
@@ -283,27 +285,6 @@ export var log = {
 	    videoLog.expand.loadeddata_2_playing = time - videoLog.time.loadeddata;
 	    videoLog.expand.loadplayer_2_playing = time - videoLog.time.play;
     },
-    createLogDebug() {
-	var videoLog = this.videoLog;
-            var str = '' +
-            'loadplayer_2_dns:' + videoLog.expand.loadplayer_2_dns + '<br/>' +
-            'dns_2_connect: ' + videoLog.expand.dns_2_connect + '<br/>' +
-            'connect_2_loadstart: ' + videoLog.expand.connect_2_loadstart + '<br/>' +
-            'loadplayer_2_loadstart: ' + videoLog.expand.loadplayer_2_loadstart + '<br/>' +
-            'loadstart_2_loadmetadata: ' + videoLog.expand.loadstart_2_loadmetadata + '<br/>' +
-            'loadmetadata_2_loadeddata: ' + videoLog.expand.loadmetadata_2_loadeddata + '<br/>' +
-            'loadeddata_2_playing: ' + videoLog.expand.loadeddata_2_playing + '<br/>' +
-            'loadplayer_2_playing: ' + videoLog.expand.loadplayer_2_playing + '<br/>';
-            if (!document.querySelector('#videoLogDebug')) {
-		var ele = document.createElement('div'); 
-		ele.style.cssText = 'position:fixed;z-index:1001; top:0;left:0;background-color:green;z-index:1000;text-align:left;overflow:scroll;';
-		ele.id = 'videoLogDebug'; 
-		ele.innerHTML = str;
-		document.body.appendChild(ele);
-            } else {
-                document.querySelector('#videoLogDebug').innerHTML = str;
-            }
-    },
     getPlayTime(data) {
 	var self = this;
 	var videoLog = self.videoLog;
@@ -328,7 +309,6 @@ export var log = {
 	}
 	var time = +new Date();
 	self.getPlayExpand(time);
-	self.createLogDebug();
         self.sendLog('play', data);
     },
     /**
@@ -365,7 +345,8 @@ export var log = {
                                 //ext
                                 {
                                         ext: {
-						refer: data.refer
+						refer: data.refer,
+						videoSrc: data.videoSrc
                                         }
                                 }
                             );
