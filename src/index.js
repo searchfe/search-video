@@ -35,7 +35,7 @@ export class searchVideo {
             let https = /^https:\/\//;
             config.src.forEach((value, index) => {
                 if (!https.test(value)) {
-                    alert('No.${index} video src is not https!');
+                    alert(`No.${index} video's src is not https!`);
                     return false;
                 }
             });
