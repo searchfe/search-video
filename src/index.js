@@ -33,17 +33,17 @@ export class searchVideo {
         if (config.https) {
             // Adjust video src is https
             let https = /^https:\/\//;
-            config['src'].forEach((value, index) => {
+            config.src.forEach((value, index) => {
                 if (!https.test(value)) {
                     alert(`No.${index} video's src is not https!`);
                     return false;
                 }
             });
             // Adjust poster src is https
-            if (!https.test(config['poster'])) {
-                    alert(`Poster's src is not https!`);
-                    return false;
-                }
+            if (!https.test(config.poster)) {
+                alert('Poster src is not https!');
+                return false;
+            }
         }
         return true;
     }
@@ -54,7 +54,7 @@ export class searchVideo {
      * @param {Object} config Set config to dom
      */
     initDom(config) {
-        //Not video element attribute
+        // Not video element attribute
         const EXTEA = ['extra', 'https'];
         let self = this;
         var checkResult = self.checkParams(config);
@@ -62,7 +62,7 @@ export class searchVideo {
             return;
         }
         let container = document.querySelector('#' + config.id);
-        container.innerHTML = `<video>Sorry, your browser doesn't support embedded videos.</video>`;
+        container.innerHTML = '<video>Sorry, your browser does not support embedded videos.</video>';
         let videoDom = container.querySelector('video');
         let srcList = [];
         for (let k in config) {
@@ -91,23 +91,25 @@ export class searchVideo {
         }
         log.bind(videoDom, config.extra.refer);
     }
+
     /**
-     * 
+     * 播放视频list
+     *
      * @param {HTMLElement} videoDom Video DOM
      * @param {Array} srcList Video src list
      */
     playList(videoDom, srcList) {
         let index = 0;
         let flag = false;
-        videoDom.addEventListener('ended', function() {
+        videoDom.addEventListener('ended', function () {
             index++;
             // When play list end set index = 0, to the first src url
-            if (index === srcList.length){
-                index = 0;    
+            if (index === srcList.length) {
+                index = 0;
             }
-            videoDom.setAttribute('src',srcList[index]);
+            videoDom.setAttribute('src', srcList[index]);
             if (!flag) {
-                videoDom.addEventListener('loadeddata', function() {
+                videoDom.addEventListener('loadeddata', function () {
                     if (index !== 0) {
                         videoDom.play();
                     }
