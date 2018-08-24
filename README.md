@@ -19,8 +19,10 @@ CDN：https://vdse.bdstatic.com//search-video.v1.min.js
         <script>
             var player = new searchVideo({
                 id: 'searchVideo',
+                // 视频地址请使用HTTPS
                 src: ['xxx.mp4'],
                 controls: true,
+                // 封面图地址请使用HTTPS
                 poster: 'xxx.jpg',
                 autoplay: true,
                 width: 800,
@@ -48,6 +50,8 @@ yarn watch #实时编译代码
 ```
 master分支只接受develop的merge。
 pr请发到develop上。
+
+建议webpack 4.0.1, webpack-cli 2.0.10
 
 ## MIP版本
 
