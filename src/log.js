@@ -174,7 +174,7 @@ export var log = {
         // Error log
         videoEl.addEventListener('error', function () {
             var data = videoEl.error;
-            send('error', data);
+            self.sendLog('error', data);
         });
     },
     getNetwork() {
