@@ -118,27 +118,11 @@ export var log = {
                 Object.assign(data, urlData);
                 self.getPlayTime(data);
             }
-            else if (videoLog.status.waiting) {
-                videoLog.status.waiting = false;
-                var time = playingTime - videoLog.time.waiting;
-                var data = {
-                    time: time,
-                    duration: videoLog.duration
-                };
-                Object.assign(data, urlData);
-                self.sendLog('waiting', data);
-            }
-        });
-        videoEl.addEventListener('waiting', function () {
-            videoLog.time.waiting = +new Date();
-            videoLog.status.waiting = true;
         });
         // Played time & Play completion ratio
         var sectionArr = new Array(videoLog.sectionNum).fill(0);
         videoEl.addEventListener('timeupdate', function () {
-            if (isNaN(videoLog.duration)) {
-                videoLog.duration = videoEl.duration;
-            }
+            var duration = videoEl.duration;
             // Hack Android playing event
             if (!videoLog.status.init && os.isAndroid() && videoEl.currentTime !== 0) {
                 var data = {
@@ -148,16 +132,15 @@ export var log = {
                 self.getPlayTime(data);
             }
             // If duration > 10s send Played time & Play completion ratio log
-            if (videoLog.duration > 10) {
+            if (duration > 10) {
                 for (var i = 0; i < sectionArr.length; i++) {
                     if (sectionArr[i] === 0
-                    && ((videoEl.currentTime / videoLog.duration) >= (i / sectionArr.length))
-                    && ((videoEl.currentTime / videoLog.duration) < ((i + 1) / sectionArr.length))) {
+                    && ((videoEl.currentTime / duration) >= (i / sectionArr.length))
+                    && ((videoEl.currentTime / duration) < ((i + 1) / sectionArr.length))) {
                         sectionArr[i] = 1;
                         // Data of 0% is replace by play times
                         if (i !== 0) {
                             var data = {
-                                currentTime: videoEl.currentTime,
                                 cent: (i / videoLog.sectionNum) * 100 + '%'
                             };
                             Object.assign(data, urlData);
@@ -169,11 +152,7 @@ export var log = {
         });
         // Play end statistics separately
         videoEl.addEventListener('ended', function () {
-            if (isNaN(videoLog.duration)) {
-                videoLog.duration = videoEl.duration;
-            }
             var data = {
-                currentTime: videoLog.duration,
                 cent: '100%'
             };
             Object.assign(data, urlData);
@@ -191,6 +170,11 @@ export var log = {
                 sectionNum: 10
             };
             sectionArr.fill(0);
+        });
+        // Error log
+        videoEl.addEventListener('error', function () {
+            var data = videoEl.error;
+            self.sendLog('error', data);
         });
     },
     getNetwork() {
@@ -372,47 +356,45 @@ export var log = {
                     }
                 );
                 break;
-            case 'waiting':
-                time = data.time;
-                var duration = data.duration;
-                // Send log when buffer event happen, coust time >= 100ms
-                if (100 <= time && time < 300) {
-                    self.webb2.send('et_comm', {
-                        msg: 'searchVideo: Buffer 100<=time<300',
-                        time: time,
-                        duration: duration,
-                        url: data.url,
-                        videoSrc: data.videoSrc
-                    });
-                }
-                if (300 <= time && time < 1000) {
-                    self.webb2.send('et_comm', {
-                        msg: 'searchVideo: Buffer 300<=time<1000',
-                        time: time,
-                        duration: duration,
-                        url: data.url,
-                        videoSrc: data.videoSrc
-                    });
-                }
-                if (1000 <= time) {
-                    self.webb2.send('et_comm', {
-                        msg: 'searchVideo: Buffer 1000<=time',
-                        time: time,
-                        duration: duration,
-                        url: data.url,
-                        videoSrc: data.videoSrc
-                    });
-                }
-                break;
             case 'section':
-                self.webb2.send('pf_comm', {
-                    cent: data.cent,
-                    currentTime: data.currentTime,
-                    url: data.url,
-                    videoSrc: data.videoSrc
-                }, function () {}, {
-                    group: 'searchVideo'
-                });
+                self.webb2.sendPfLog(
+                    // info
+                    {
+                        cent: data.cent
+                    },
+                    // dim
+                    {
+                        net: self.videoLog.network,
+                        type: 'thirdparty-cent'
+                    },
+                    // ext
+                    {
+                        ext: {
+                            refer: data.refer,
+                            videoSrc: data.videoSrc
+                        }
+                    }
+                );
+                break;
+            case 'error':
+                self.webb2.sendExceptionLog(
+                    // info
+                    {
+                        code: data.code,
+                        message: data.message
+                    },
+                    // dim
+                    {
+                        net: self.videoLog.network
+                    },
+                    // ext
+                    {
+                        ext: {
+                            refer: data.refer,
+                            videoSrc: data.videoSrc
+                        }
+                    }
+                );
                 break;
         }
     }

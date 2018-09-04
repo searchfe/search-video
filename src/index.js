@@ -30,7 +30,7 @@ export class searchVideo {
             alert('DOM need to be string');
             return false;
         }
-        if (config.https) {
+        /* if (config.https) {
             // Adjust video src is https
             let https = /^https:\/\//;
             config.src.forEach((value, index) => {
@@ -44,7 +44,7 @@ export class searchVideo {
                 alert('Poster src is not https!');
                 return false;
             }
-        }
+        } */
         return true;
     }
 
